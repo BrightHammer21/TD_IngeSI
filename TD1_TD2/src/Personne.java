@@ -55,11 +55,7 @@ public class Personne {
         this.prenom = prenom;
     }
 
-    public int getNote() {
-        return note;
-    }
-
-    public void setNote(int note) {
+    public void addNote(int note) {
         listeNote.add(note);
     }
 

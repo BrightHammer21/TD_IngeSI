@@ -25,15 +25,15 @@ public class ListePersonne {
     }
 
     //////////////////////////METHODES
-    public void ajouterPersonne(Personne p)
+    public void ajouterPersonne(Personne p, int note)
     {
         if(personnes.size()>0)
         {
             for(Personne perso:personnes)
             {
-                if(perso.getPrenom()==p.getPrenom()&&perso.getNom()==p.getNom()&&perso.getNote()!=p.getNote())
+                if(perso.getPrenom()==p.getPrenom()&&perso.getNom()==p.getNom())
                 {
-                    perso.setNote(p.getNote());
+                    perso.addNote(note);
                 }
                 else
                 {

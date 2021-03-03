@@ -3,13 +3,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
 
         //ListePersonne listePersonne = new ListePersonne();
-        ArrayList<Personne> liste = new ArrayList<>();
+        HashSet<Personne> liste = new HashSet<>();
 
         int compteur =0;
 
@@ -19,14 +21,12 @@ public class Main {
 
         int compteurNote=0;
 
-        for(String ligne : Files.readAllLines(Paths.get("C:/Users/lucie/Documents/GitHub/TD_IngeSI/TD1_TD2/src/td1_txt.txt"))){
+        for(String ligne : Files.readAllLines(Paths.get("src/td1_txt.txt"))){
             for(String Chaine : ligne.split(";"))
             {
-                //System.out.println(compteur+ " "+Chaine);
                 if(compteurNote%2==0)
                 {
                     for(String Chaine2 : Chaine.split(" ")) {
-                     ///   System.out.println(compteur+ " "+Chaine2);
                         if(compteur%2==0)
                         {
                             prenom=Chaine2;
@@ -45,40 +45,36 @@ public class Main {
                 }
                   compteurNote++;
 
+
                 Personne p = new Personne(nom,prenom,note);
-                if (liste.size()>0)
-                {
-                    for(Personne perso: liste)
+                Boolean res = true;
+                for(Personne perso: liste)
                     {
-                        if(perso.getPrenom()==p.getPrenom()&&perso.getNom()==p.getNom()&&perso.getNote()!=p.getNote())
+                        if(perso.getPrenom()==prenom && perso.getNom()==nom)
                         {
-                            perso.setNote(p.getNote());
+                            perso.addNote(note);
+                            res = false;
+
+                           //System.out.println("coucou");
                         }
-                        /*else
-                        {
-                            liste.add(p);
-                        }*/
+
                     }
-                } else
+                if (res == true)
                 {
                     liste.add(p);
                 }
 
-
-
-
-
             }
         }
 
-        ListePersonne listePersonne = new ListePersonne(liste);
+       // ListePersonne listePersonne = new ListePersonne(liste);
 
-        Personne margaret = listePersonne.rechercherPersonneNom("Smith","Margaret");
+       /* Personne margaret = listePersonne.rechercherPersonneNom("Smith","Margaret");
 
         System.out.println(margaret.getNom()+" "+margaret.getPrenom());
         for(int notes : margaret.getListeNote())
         {
             System.out.print(notes+" - ");
-        }
+        }*/
     }
 }
