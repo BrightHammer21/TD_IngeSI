@@ -20,8 +20,11 @@ public class Arbre {
 
     public void insertionNoeudVal(int entier)
     {
+        System.out.println("entier : "+entier);
 
-       if(noeudRacine.getFeuille()==true) {
+
+        if(noeudRacine.getFeuille()==true) {
+            System.out.println("noeudR + : "+entier);
            insererNouvelleVal(noeudRacine,entier);
        }
        else
@@ -31,30 +34,80 @@ public class Arbre {
 
            while(estFeuille==false)
            {
-               if(noeudCourant.getFeuille()==true)
-               {
-                   insererNouvelleVal(noeudCourant,entier);
-                   estFeuille=true;
-               }
-
+               /*System.out.println("size : "+noeudCourant.getValeurs().size());*/
                //On regarde à gauche si notre entier < à la val du noeud
                if(noeudCourant.getValeurs().get(0)<entier)
                {
-                   //On regarde si ce noeud a un enfant
-                   noeudCourant=noeudCourant.getFilsGauche();
+                   System.out.println(noeudCourant.getValeurs().get(0)+" < "+entier);
+                   if(noeudCourant.getFilsGauche() !=null)
+                   {
+                       //On regarde si ce noeud a un enfant
+                       noeudCourant=noeudCourant.getFilsGauche();
+                       noeudCourant.setFeuille(false);
+                   }
+                   else
+                   {
+                       noeudCourant.setFeuille(true);
+                   }
 
                }
-               else if(noeudCourant.getValeurs().get(1)>entier)
+               //regarde à droite
+               else if(noeudCourant.getValeurs().get(0)>entier && noeudCourant.getValeurs().size()<2)
                {
-                   noeudCourant=noeudCourant.getFilsDroit();
+                   System.out.println("coucou");
+                   if(noeudCourant.getFilsDroit()!=null)
+                   {
+                       noeudCourant=noeudCourant.getFilsDroit();
+                       noeudCourant.setFeuille(false);
+                   }
+                   else
+                   {
+                       noeudCourant.setFeuille(true);
+                   }
 
+               }
+               //regarde à droit pour placer au milieu ou à l';extrême droite
+               else if(noeudCourant.getValeurs().get(0)>entier && noeudCourant.getValeurs().size()==2)
+               {
+                   if(noeudCourant.getFilsDroit()!=null)
+                   {
+                       if(noeudCourant.getValeurs().get(1) < entier)
+                       {
+                           noeudCourant=noeudCourant.getFilsMilieu();
+                           noeudCourant.setFeuille(false);
+                       }
+                       else
+                       {
+                           noeudCourant=noeudCourant.getFilsDroit();
+                           noeudCourant.setFeuille(false);
+                       }
+                   }
+
+                   else
+                   {
+                       noeudCourant.setFeuille(true);
+                   }
                }
                else
                {
+
                    noeudCourant=noeudCourant.getFilsMilieu();
+                   noeudCourant.setFeuille(false);
                }
 
+
+
+
+               if(noeudCourant.getFeuille()==true)
+               {
+
+                   estFeuille=true;
+               }
+
+
+
            }
+           insererNouvelleVal(noeudCourant,entier);
 
        }
     }
@@ -98,8 +151,6 @@ public class Arbre {
 
     private void insererNouvelleVal(Noeud n, int entier)
     {
-
-
         if(n.retournerTailleNoeud()==1)
         {
             n.ajouterValeur(entier);
@@ -111,26 +162,34 @@ public class Arbre {
         }
     }
 
-    public void afficherArbre()
+    public void afficherArbre(int niveau, Noeud noeud)
     {
-        System.out.println("Arbre : ");
-        Noeud noeudCourant = noeudRacine;
-        while(noeudCourant.getFeuille()==false)
+
+        System.out.println("Niveau : "+ niveau+" ");
+
+        for(int i=0; i<noeud.getValeurs().size(); i++)
         {
-            /*if(noeudCourant.getFilsGauche()!=null)
-            {
-                noeudCourant=noeudCourant.getFilsGauche();
-
-            }
-            else if(noeudCourant.getValeurs().get(1)==)
-            {
-                noeudCourant=noeudCourant.getFilsDroit();
-
-            }
-            else
-            {
-                noeudCourant=noeudCourant.getFilsMilieu();
-            } */
+            System.out.println(noeud.getValeurs().get(i)+" ");
         }
+        niveau++;
+        if(noeud.getFilsGauche()!=null)
+        {
+            ArrayList<Noeud> listeEnfants = new ArrayList<>();
+
+            listeEnfants.add(noeud.getFilsGauche());
+            listeEnfants.add(noeud.getFilsDroit());
+
+            if(noeud.getFilsMilieu()!=null)
+            {
+                listeEnfants.add(noeud.getFilsMilieu());
+            }
+            for(int i=0; i<listeEnfants.size();i++)
+            {
+
+                this.afficherArbre(niveau,listeEnfants.get(i));
+            }
+        }
+
+
     }
 }
