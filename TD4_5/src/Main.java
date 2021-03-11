@@ -12,7 +12,10 @@ public class Main {
 
         monArbre.insertionNoeudVal(4);
         monArbre.insertionNoeudVal(6);
+        monArbre.insertionNoeudVal(3);
         monArbre.insertionNoeudVal(7);
+        monArbre.insertionNoeudVal(8);
+        monArbre.insertionNoeudVal(10);
 
         monArbre.afficherArbre(0,noeudRacine);
     }

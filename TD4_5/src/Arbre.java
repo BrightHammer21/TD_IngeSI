@@ -16,15 +16,14 @@ public class Arbre {
 
         noeudRacine.setRacine(true);
         noeudRacine.setFeuille(true);
+        noeudRacine.setParent(null);
     }
 
     public void insertionNoeudVal(int entier)
     {
-        System.out.println("entier : "+entier);
 
 
         if(noeudRacine.getFeuille()==true) {
-            System.out.println("noeudR + : "+entier);
            insererNouvelleVal(noeudRacine,entier);
        }
        else
@@ -36,12 +35,13 @@ public class Arbre {
            {
                /*System.out.println("size : "+noeudCourant.getValeurs().size());*/
                //On regarde à gauche si notre entier < à la val du noeud
-               if(noeudCourant.getValeurs().get(0)<entier)
+
+               if(noeudCourant.getValeurs().get(0)>entier)
                {
-                   System.out.println(noeudCourant.getValeurs().get(0)+" < "+entier);
                    if(noeudCourant.getFilsGauche() !=null)
                    {
                        //On regarde si ce noeud a un enfant
+                       noeudCourant.getFilsGauche().setParent(noeudCourant);
                        noeudCourant=noeudCourant.getFilsGauche();
                        noeudCourant.setFeuille(false);
                    }
@@ -52,11 +52,11 @@ public class Arbre {
 
                }
                //regarde à droite
-               else if(noeudCourant.getValeurs().get(0)>entier && noeudCourant.getValeurs().size()<2)
+               else if(noeudCourant.getValeurs().get(0)<entier && noeudCourant.getValeurs().size()<2)
                {
-                   System.out.println("coucou");
                    if(noeudCourant.getFilsDroit()!=null)
                    {
+                       noeudCourant.getFilsDroit().setParent(noeudCourant);
                        noeudCourant=noeudCourant.getFilsDroit();
                        noeudCourant.setFeuille(false);
                    }
@@ -67,17 +67,19 @@ public class Arbre {
 
                }
                //regarde à droit pour placer au milieu ou à l';extrême droite
-               else if(noeudCourant.getValeurs().get(0)>entier && noeudCourant.getValeurs().size()==2)
+               else if(noeudCourant.getValeurs().get(0)<entier && noeudCourant.getValeurs().size()==2)
                {
                    if(noeudCourant.getFilsDroit()!=null)
                    {
                        if(noeudCourant.getValeurs().get(1) < entier)
                        {
+                           noeudCourant.getFilsMilieu().setParent(noeudCourant);
                            noeudCourant=noeudCourant.getFilsMilieu();
                            noeudCourant.setFeuille(false);
                        }
                        else
                        {
+                           noeudCourant.getFilsDroit().setParent(noeudCourant);
                            noeudCourant=noeudCourant.getFilsDroit();
                            noeudCourant.setFeuille(false);
                        }
@@ -103,10 +105,8 @@ public class Arbre {
 
                    estFeuille=true;
                }
-
-
-
            }
+
            insererNouvelleVal(noeudCourant,entier);
 
        }
@@ -142,9 +142,33 @@ public class Arbre {
         droite.setFeuille(true);
         droite.setRacine(false);
 
-        n.setValeurs(newVal);
-        n.setFilsGauche(gauche);
-        n.setFilsDroit(droite);
+        boolean res = true;
+        while(res)
+        {
+            if(n.getParent()==null)
+            {
+                res= false;
+            }
+            else if(n.getParent().getValeurs().size()<2)
+            {
+                n.getParent().addValeur(valeurRemontee);
+                n.getParent().setFilsMilieu(gauche);
+                n.getParent().setFilsDroit(droite);
+                gauche.setParent(n.getParent());
+                droite.setParent(n.getParent());
+                res=false;
+            }
+        }
+
+
+       if(n.getParent()==null)
+       {
+           gauche.setParent(n);
+           droite.setParent(n);
+           n.setValeurs(newVal);
+           n.setFilsGauche(gauche);
+           n.setFilsDroit(droite);
+       }
 
         n.setFeuille(false);
     }

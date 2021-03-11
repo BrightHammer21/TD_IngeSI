@@ -8,6 +8,7 @@ public class Noeud {
     private Noeud filsGauche;
     private Noeud filsDroit;
     private Noeud filsMilieu;
+    private Noeud parent;
 
     public Noeud()
     {
@@ -59,6 +60,10 @@ public class Noeud {
     public void setValeurs(ArrayList<Integer> valeurs) {
         this.valeurs = valeurs;
     }
+    public  void addValeur(int entier)
+    {
+        this.valeurs.add(entier);
+    }
 
     public void setFilsGauche(Noeud n)
     {
@@ -86,5 +91,12 @@ public class Noeud {
     public Noeud getFilsMilieu() {
         return filsMilieu;
     }
+    public Noeud getParent() {
+        return parent;
+    }
+    public void setParent(Noeud parent) {
+        this.parent = parent;
+    }
+
 
 }
